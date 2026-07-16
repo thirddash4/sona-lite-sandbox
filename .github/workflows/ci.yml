@@ -8,4 +8,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - run: echo ok
+      - uses: oven-sh/setup-bun@v2
+      - name: Run tests (guarded for a fresh repo with no test files yet)
+        run: |
+          if find . -type f -name "*.test.*" ! -path "./node_modules/*" | grep -q .; then
+            bun test
+          else
+            echo "no tests"
+          fi
